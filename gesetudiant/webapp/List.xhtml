@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+     <title>Liste des étudiants</title>
+</h:head>
+<h:body>
+ <p:accordionPanel>
+       <p:tab title="Dashboard of Students"  >
+           <f:view>
+               <h:form>
+                   <h1><h:outputText value="List of Students" style="color:#87CEEB; background-color:#001F3F;box-shadow:5px,10px,0px,20px red; text-align:center; border-radius:20px; padding:7px"/></h1>
+                   <p:dataTable id="dataTableId" var="et" style="margin:auto; text-align:left;" value="#{etudiantBean.chargerListeEtudiant()}">
+                         <p:column>
+                             <f:facet name="header">Id</f:facet>
+                             #{et.id}
+                         </p:column>
+                         <p:column>
+                             <f:facet name="header">First_Name</f:facet>
+                             #{et.nom}
+                         </p:column>      
+                         <p:column>
+                             <f:facet name="header">Last_Name</f:facet>
+                             #{et.prenom}
+                         </p:column>
+						 <p:column>
+						    <f:facet name="header">Birthday</f:facet>
+						    <h:outputText value="#{et.dateNais}">
+						        <f:convertDateTime pattern="yyyy-MM-dd" />
+						    </h:outputText>
+						 </p:column>
+
+                         <p:column>
+                             <f:facet name="header">
+                                 <h:outputText value="Actions" />
+                             </f:facet>
+                             <p:commandLink value="Delete" action="#{etudiantBean.supprimerEtudiant(et.id)}" update="dataTableId" 
+                             style="text-decoration:none; color:red; font-weight:bold"/>
+					            &nbsp;&nbsp;&nbsp;
+					         <p:commandLink value="Update" action="#{etudiantBean.getEtudiantParId(et.id)}" update="formModifier"
+					         style="text-decoration:none; lor:red; font-weight:bold;color:red" />
+                         </p:column>
+                   </p:dataTable>
+               </h:form>
+           </f:view>
+       </p:tab>
+  </p:accordionPanel>
+  	
+<h:form id="Ajouter" style="display: inline-block;margin-left: 35px;  ">
+       <h1><h:outputText value="Adding the students" style="color:#87CEEB; background-color:#001F3F; padding:7px; border-radius:30px" /></h1>
+        <p:panelGrid columns="2" >
+         
+	        
+	        <p:outputLabel value="Nom:" />
+	        <p:inputText id="nom" value="#{etudiantBean.etudiant.nom}" />
+	
+	        <p:outputLabel value="Prenom:" />
+	        <p:inputText id="prenom" value="#{etudiantBean.etudiant.prenom}" />
+	
+	        <p:outputLabel value="Date de Naissance:" />
+	        <p:calendar id="dateNais" value="#{etudiantBean.etudiant.dateNais}" required="true" 
+	               requiredMessage="ce champ est obligatoire" showOn="both"/>
+	         
+	        <p:outputLabel value="" />
+            <p:commandButton action="#{etudiantBean.ajouterEtudiant()}" update="Ajouter" value="Add Student" style="background-color:#87CEEB; color: #001F3F; font-size:20px" />
+      
+        </p:panelGrid>
+</h:form>
+
+<h:form id="formModifier" style="display: inline-block;margin-left: 520px;margin-bottom:50px">
+    <h1><h:outputText value="Changes to the information "  style="color:#87CEEB; background-color:#001F3F; padding:7px; border-radius:30px"/></h1>
+    <p:panelGrid columns="2">
+      
+<p:outputLabel value="Id:" />
+	        <p:inputText id="id" value="#{etudiantBean.etudiant.id}" />
+	        
+        <p:outputLabel value="Nom:" />
+        <p:inputText id="nom" value="#{etudiantBean.etudiant.nom}" />
+
+        <p:outputLabel value="Prenom:" />
+        <p:inputText id="prenom" value="#{etudiantBean.etudiant.prenom}" />
+
+        <p:outputLabel value="Date de Naissance:" />
+        <p:calendar id="dateNais" value="#{etudiantBean.etudiant.dateNais}" required="true" 
+               requiredMessage="ce champ est obligatoire" showOn="both"/>
+
+        <p:outputLabel value="" />      
+		<p:commandButton action="#{etudiantBean.modifier}" update="formModifier" value="Update student" 
+                 oncomplete="console.log('Student before update:', #{etudiantBean.etudiant});" style="background-color:#87CEEB; color:#001F3F; font-size:20px" />
+
+    </p:panelGrid>
+</h:form>
+
+  
+
+</h:body>
+</html>
